@@ -8,10 +8,11 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<AppDbContext>(opt => 
     opt.UseInMemoryDatabase("InMem"));
 
-builder.Services.AddScoped<IpPlatformRepo, PlatformRepo>();
-
+builder.Services.AddScoped<IPlatformRepo, PlatformRepo>();
+builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 var app = builder.Build();
 
@@ -22,7 +23,15 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseRouting();
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=Home}/{action=Index}/{id?}"
+);
+
 app.UseHttpsRedirection();
+
+PrepDb.PrepPopulation(app);
 
 app.Run();
 

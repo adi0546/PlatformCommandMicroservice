@@ -2,7 +2,7 @@ using PlatformService.Models;
 
 namespace PlatformService.Data
 {
-    public interface IpPlatformRepo
+    public interface IPlatformRepo
     {
         bool SaveChanges();
         IEnumerable<Platform> GetAllPlatforms();
